@@ -1,47 +1,74 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+  import { reactive } from 'vue';
+  import Cabecalho from './components/Cabecalho.vue';
+  import Formulario from './components/Formulario.vue';
+  import Resultado from './components/Resultado.vue';
+
+const state = reactive({
+  filtro: 'soma',
+  num1: '',
+  num2: '',
+  resultado: '',
+})
+
+const soma = () => {
+  const resultadoSoma = state.num1 + state.num2
+  state.resultado = resultadoSoma;
+  return state.resultado
+}
+
+const subtracao = () => {
+  const resultadoSubtracao = state.num1 - state.num2
+  state.resultado = resultadoSubtracao;
+  return state.resultado
+}
+
+const multiplicacao = () => {
+  const resultadoMultiplicacao = state.num1 * state.num2
+  state.resultado = resultadoMultiplicacao;
+  return state.resultado
+}
+
+const divisao = () => {
+  const resultadoDivisao = state.num1 / state.num2
+  state.resultado = resultadoDivisao
+  return state.resultado
+}
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <div class="container">
+    <div class="background-calculator">
+      <Cabecalho />
+      <Formulario :valorPrimeiroInput="event => state.num1 = Number(event.target.value)" :valorSegundoInput="event => state.num2 = Number(event.target.value)" :filtro="state.filtro" :selecionaFiltro="event => state.filtro = event.target.value"/>
+      <Resultado :filtro="state.filtro" :funcaoSoma="soma()" :funcaoSub="subtracao()" :funcaoMult="multiplicacao()" :funcaoDivisao="divisao()" />
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  width: 100vw;
+  height: 100vh;
+
+  padding: 0;
+  padding-bottom: 196px;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.background-calculator {
+  border: 4px solid #001aff;
+  border-radius: 50px;
+  padding: 50px;
+  background-color: #00b7ff;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+@media screen and (min-width: 360px) {
+  .container {
+    width: 80%;
   }
 }
 </style>
